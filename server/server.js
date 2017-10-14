@@ -21,6 +21,14 @@ app.post('/todos', (req, res) => {
     });
 });
 
+app.get('/todos', (req, res) => {
+    todo.find().then((todos) => {
+        res.send({todos});
+    }, (e) => {
+        res.status(400).body(e);
+    });
+});
+
 app.listen(3000, () => {
     console.log('app listing at port 3000');
 });
