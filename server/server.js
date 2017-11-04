@@ -25,10 +25,20 @@ app.post('/todos', (req, res) => {
     });
 });
 
+app.post('/users', (req, res) => {
+    let newuser = new user(_.pick(req.body, ['name', 'email', 'password']));
+
+    newuser.save().then((doc) => {
+        res.send(doc);
+    }).catch((e) => {
+        res.status(400).send();
+    });
+});
+
 app.get('/todos', (req, res) => {
     todo.find().then((todos) => {
         res.send({todos});
-    }, (e) => {
+    }).catch((e) => {
         res.status(400).body(e);
     });
 });
