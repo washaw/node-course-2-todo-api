@@ -28,8 +28,10 @@ app.post('/todos', (req, res) => {
 app.post('/users', (req, res) => {
     let newuser = new user(_.pick(req.body, ['name', 'email', 'password']));
 
-    newuser.save().then((doc) => {
-        res.send(doc);
+    newuser.save().then(() => {
+        return newuser.generateAuthToken();
+    }).then ((token) => {
+        res.header('x-auth', token).send(newuser);
     }).catch((e) => {
         res.status(400).send();
     });
